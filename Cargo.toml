@@ -1,0 +1,17 @@
+[package]
+name = "pcapstreamer"
+version = "0.1.0"
+authors = ["Michael Krolikowski <mkroli@yahoo.de>"]
+edition = "2018"
+
+[dependencies]
+error-chain = "0.12"
+log = "0.4"
+fern = "0.5"
+chrono = "*"
+clap = "2.32"
+pcap = "0.7"
+pcap-file = "0.10"
+tokio = "0.1"
+futures = "0.1"
+rdkafka = "0.20"
