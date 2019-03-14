@@ -10,7 +10,7 @@ cargo install
 ```
 
 ## Usage
-```bash
+```
 pcapstreamer 0.1.0
 Michael Krolikowski <mkroli@yahoo.de>
 
