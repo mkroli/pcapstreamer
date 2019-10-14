@@ -1,5 +1,7 @@
 # pcapstreamer
 
+[![Build Status](https://cloud.drone.io/api/badges/mkroli/pcapstreamer/status.svg)](https://cloud.drone.io/mkroli/pcapstreamer)
+
 pcapstreamer captures network traffic and publishes it to Kafka.
 
 ## Installation

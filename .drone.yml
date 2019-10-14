@@ -1,0 +1,12 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: "Build"
+    image: rust:1.38-buster
+    commands:
+      - apt update
+      - apt -y install libpcap-dev
+      - cargo build -j8 --release
