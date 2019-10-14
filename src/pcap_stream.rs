@@ -16,7 +16,8 @@
 
 use futures::Stream;
 use pcap::{Active, Capture, Device, Linktype};
-use pcap_file::{DataLink, PcapHeader, PcapWriter};
+use pcap_file::{DataLink, PcapWriter};
+use pcap_file::pcap::PcapHeader;
 use tokio::prelude::*;
 
 use crate::errors::*;
@@ -43,11 +44,14 @@ impl PcapStream {
             capture.filter(filter).chain_err(|| "invalid filter")?;
         }
         let Linktype(link_type) = capture.get_datalink();
-        let header = PcapHeader::with_datalink(DataLink::from(link_type as u32));
+        let header = PcapHeader {
+            datalink: DataLink::from(link_type as u32),
+            ..Default::default()
+        };
 
         Ok(PcapStream {
-            capture: capture,
-            header: header,
+            capture,
+            header,
         })
     }
 }
@@ -67,11 +71,11 @@ impl Stream for PcapStream {
             Ok(packet) => {
                 let buffer = Vec::with_capacity(65 * 1024);
                 let mut pcap_writer: PcapWriter<Vec<u8>> = PcapWriter::with_header(self.header, buffer).chain_err(|| "failed to write packet")?;
-                let p = pcap_file::Packet::new(
+                let p = pcap_file::pcap::Packet::new(
                     packet.header.ts.tv_sec as u32,
                     packet.header.ts.tv_usec as u32,
-                    packet.header.len,
                     packet.data,
+                    packet.header.len,
                 );
                 pcap_writer.write_packet(&p).chain_err(|| "failed to write packet")?;
                 let buffer = pcap_writer.into_writer();
